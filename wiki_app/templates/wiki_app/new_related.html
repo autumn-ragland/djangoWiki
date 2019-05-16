@@ -1,0 +1,14 @@
+{% extends 'wiki_app/base.html' %}
+{#add new related content to an enrty#}
+{% block content %}
+<h2>Related Content</h2>
+<hr/>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary">Submit</button>
+    <br>
+    <a href="{% url 'my_entries' %}">Back</a>
+</form>
+
+{% endblock %}

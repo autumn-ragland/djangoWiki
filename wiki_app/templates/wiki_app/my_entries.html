@@ -1,0 +1,52 @@
+{% extends 'wiki_app/base.html' %}
+
+{% block content %}
+{#render user entries in a grid with options to edit, delete, or add related#}
+{% if request.user.is_authenticated %}
+    <h2>{{ request.user }}'s Entries</h2>
+    <hr/>
+    {% if my_entries %}
+
+    <div id="index_grid">
+    {% for entry in my_entries %}
+
+    <section class="index_body">
+    <a href="{% url 'view_entry' entry.id %}"><h4>{{ entry.title }}</h4></a>
+    <p>{{ entry.text|slice:':250' }}...</p>
+    <p>Created: {{ entry.create_date }}</p>
+    <p>Updated: {{ entry.update_date }}</p>
+
+
+    {% for eachItem in related_items %}
+        {% if eachItem.entry_model_fk.title == entry.title %}
+        <p>Related Item: {{ eachItem.title }}</p>
+        {% endif %}
+    {% endfor %}
+
+    <a href="{% url 'edit_entry' entry.id %}"><button type="button" class="btn btn-light">Edit Post</button></a>
+    <a href="{% url 'delete_entry' entry.id %}"><button type="button" class="btn btn-light">Delete Post</button></a>
+    <a href="{% url 'new_related' entry.id %}"><button type="button" class="btn btn-light">Add Related</button></a>
+    </section>
+
+    <section class="index_grid_image">
+        <img class="index_image" src="{{ entry.image.url }}" alt="image">
+     </section>
+    {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <h2>You have no entries</h2>
+
+    {% endif %}
+
+{% else %}
+
+<h2>Please <a href="{% url 'login' %}">Log In</a> To View Your Entries</h2>
+
+{% endif %}
+{% endblock %}
+
+
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wiki App</title>
+    {% load static %}
+    <link rel="stylesheet" href="../../static/wiki_app/css/bootstrap.css">
+    <link rel="stylesheet" href="../../static/wiki_app/css/base.css">
+</head>
+<body>
+
+<nav>
+{# nav bar based on logged in or not #}
+    {% if request.user.is_authenticated %}
+    <h3>{{request.user}}</h3>
+    <a href="{% url 'logout' %}">Logout</a>
+    <br>
+    <a href="{% url 'index' %}">Home</a>
+    <a href="{% url 'my_entries' %}">My Entries</a>
+    <a href="{% url 'new_entry' %}">New Entry</a>
+
+
+    {% else %}
+    <h3>Welcome</h3>
+    <a href="{% url 'login' %}">Login</a>
+    <a href="{% url 'new_user' %}">New User</a>
+    <br>
+    <a href="{% url 'index' %}">Home</a>
+    <a href="{% url 'my_entries' %}">My Entries</a>
+    <a href="{% url 'new_entry' %}">New Entry</a>
+
+    <br>
+    {% endif %}
+{#search bar form #}
+    <form class="searchBar" action="{% url 'search' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="searchBar" placeholder="search all entries...">
+        <button type="submit" class="btn btn-light btn-sm">Search</button>
+    </form>
+</nav>
+
+{% block content %}
+
+{% endblock %}
+{# footer #}
+<footer class="footer_base">
+    <p>created by autumn ragland codecrew 2019</p>
+</footer>
+</body>
+</html>

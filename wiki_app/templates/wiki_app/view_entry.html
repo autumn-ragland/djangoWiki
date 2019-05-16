@@ -1,0 +1,53 @@
+{% extends 'wiki_app/base.html' %}
+{#view full enrty with options to edit, delete, add related if creator of enrty#}
+{% block content %}
+<div id="view_grid">
+
+    <section class="view_body">
+        <h1>{{ entry.title }}</h1>
+        <br/>
+        {{ entry.text }}
+        <br/>
+        {{ entry.author }}
+        <br/>
+        <a href="{% url 'index' %}"><button type="button" class="btn btn-primary">Back to Home</button></a>
+        <br/>
+
+        {% if request.user.username == entry.user_model_fk.name %}
+            <a href="{% url 'edit_entry' entry.id %}">
+                <button type="button" class="btn btn-light">Edit Post</button>
+            </a>
+            <a href="{% url 'delete_entry' entry.id %}">
+                <button type="button" class="btn btn-light">Delete Post</button>
+            </a>
+            <a href="{% url 'new_related' entry.id %}">
+                <button type="button" class="btn btn-light">Add Related</button>
+            </a>
+        {% endif %}
+
+    </section>
+
+    <section class="view_image">
+        <img src="{{ entry.image.url }}"/>
+    </section>
+
+    {% if related %}
+    <section class="view_aside">
+        <h4>Related Info</h4>
+        {% for eachItem in related %}
+        <h4>{{ eachItem.title }}</h4>
+        <p>{{ eachItem.text }}</p>
+        <img class="related_image" src="{{ eachItem.image.url }}" alt="image">
+        {% endfor %}
+        <br>
+    </section>
+    {% else %}
+    <section class="view_aside">
+        <h4>Related Info</h4>
+        <p>There is no related info</p>
+    </section>
+    {% endif %}
+
+
+</div>
+{% endblock %}
